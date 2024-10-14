@@ -57,26 +57,26 @@ def tot_rain(data, date):
 	return total_rain
 	
 def report_daily(data, date):
-	daily_report = "========================= DAILY REPORT ========================"
-	daily_report += "\nDate                      Time  Temperature  Humidity  Rainfall"
-	daily_report += "\n====================  ========  ===========  ========  ========"
+	daily_report =  "========================= DAILY REPORT ========================\n"
+	daily_report += "Date                      Time  Temperature  Humidity  Rainfall\n"
+	daily_report += "====================  ========  ===========  ========  ========\n"
 	
 	for date_val in data:
 		if date_val[:8] == date[:8]:
 			year = date_val[:4]
 			month = int(date_val[4:6])
-			day = date_val[6:8]
+			day = int(date_val[6:8])
 			hour = date_val[8:10]
 			minute = date_val[10:12]
 			second = date_val[12:14].ljust(3)
 			
 			month_name = calendar.month_name[month]
-			formatted_date = f'{month_name} {int(day):02d}, {year}'.ljust(21)
+			formatted_date = f'{month_name} {day}, {year}'.ljust(21)
 			
 			temp = str(data[date_val]['t']).rjust(11)
 			hum = str(data[date_val]['h']).rjust(9)
 			rain = data[date_val]['r']
 			
-			daily_report += '\n{0} {1}:{2}:{3} {4} {5}      {6:.2f}'.format(
+			daily_report += '{0} {1}:{2}:{3} {4} {5}      {6:.2f}\n'.format(
 							formatted_date, hour, minute, second, temp, hum, rain)
 	return daily_report
