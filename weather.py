@@ -50,7 +50,7 @@ def min_humidity(data, date):
 	return min_humidity		
 	
 def tot_rain(data, date):
-	total_rain = 0
+	total_rain = 0.00
 	for date_val in data:
 		if date_val[:8] == date:
 			total_rain += data[date_val]['r']
@@ -86,21 +86,23 @@ def report_historical(data):
 	daily_report += "                          Minimum      Maximum   Minumum   Maximum     Total\n"
 	daily_report += "Date                  Temperature  Temperature  Humidity  Humidity  Rainfall\n"
 	daily_report += "====================  ===========  ===========  ========  ========  ========\n"
-	
+	dates_in = []
 	for date_val in data:
-			year = date_val[:4]
-			month = int(date_val[4:6])
-			day = int(date_val[6:8])
-			
-			month_name = calendar.month_name[month]
-			formatted_date = f'{month_name} {day}, {year}'.ljust(21)
-			
-			min_temp = str(min_temperature(data, date_val)).rjust(11)
-			min_hum = str(min_humidity(data, date_val)).rjust(9)
-			max_temp = str(max_temperature(data, date_val)).rjust(11)
-			max_hum = str(max_humidity(data, date_val)).rjust(9)
-			total_rain = str(tot_rain(data, date_val)).rjust(11)
-			
-			daily_report += '{0} {1}:{2}:{3} {4} {5}      {6}\n'.format(
-							formatted_date, min_temp, max_temp, min_hum, max_hum, total_rain, total_rain)
+			if dates_in.count(date_val[:8]) == 0:
+				dates_in.append(date_val[:8])
+				year = date_val[:4]
+				month = int(date_val[4:6])
+				day = int(date_val[6:8])
+				
+				month_name = calendar.month_name[month]
+				formatted_date = f'{month_name} {day}, {year}'.ljust(21)
+				
+				min_temp = str(min_temperature(data, date_val)).rjust(11)
+				min_hum = str(min_humidity(data, date_val)).rjust(9)
+				max_temp = str(max_temperature(data, date_val)).rjust(12)
+				max_hum = str(max_humidity(data, date_val)).rjust(9).ljust(14)
+				total_rain = tot_rain(data, date_val[:8])
+				
+				daily_report += '{0} {1} {2} {3} {4} {5:.2f}\n'.format(
+								formatted_date, min_temp, max_temp, min_hum, max_hum, total_rain)
 	return daily_report
