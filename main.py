@@ -1,6 +1,4 @@
 import weather
-import json
-import os
 
 program_finish = False
 filename = ''
@@ -38,6 +36,7 @@ while not program_finish:
 		elif choice == '9' or choice == 'quit':
 			program_finish = True
 		else:
+			print("Invalid input.")
 			
 	except Exception as e:
 		print(f"Unexpected error: {e}")
