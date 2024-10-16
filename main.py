@@ -1,11 +1,39 @@
 import weather
+import json
+import os
 
+program_finish = False
+filename = ''
+weather_dict = {}
 
-filename = input("File name: ")
-datas = weather.read_data(filename)
-
-report = weather.report_historical(datas)
-print(report)
-
-total_rains = weather.tot_rain(data={"20210203075501": {"t": 55, "h": 87, "r": 0}, "20210203090602": {"t": 63, "h": 84, "r": 0}, "20210203102903": {"t": 71, "h": 79, "r": 0}, "20210203125504": {"t": 72, "h": 69, "r": 0}, "20210203183905": {"t": 59, "h": 75, "r": 0}, "20210205044406": {"t": 57, "h": 68, "r": 0.01}, "20210205083307": {"t": 65, "h": 63, "r": 0.05}, "20210205122208": {"t": 73, "h": 56, "r": 0.11}, "20210205161109": {"t": 74, "h": 60, "r": 0.19}}, date='20210205')
-print(total_rains)
+while not program_finish:
+	
+	print("      *** TUFFY TITAN WEATHER LOGGER MAIN MENU\n")
+	print("1. Set data filename\n")
+	print("2. Add weather data\n")
+	print("3. Print daily report\n")
+	print("4. Print historical report\n")
+	print("9. Exit the program\n")
+	
+	choice = input("Enter menu choice: ")
+	
+	if choice == '1':
+		filename = input("Enter data filename: ")
+		weather_dict = weather.read_data(filename)
+	elif choice == '2':
+		date = input("Enter date (YYYYMMDD): ")
+		date += input("Enter time (hhmmss): ")
+		temp = int(input("Enter temperature: "))
+		hum = int(input("Enter humidity: "))
+		rain = float(input("Enter rainfall: "))
+		weather_add = {date: {'t': temp, 'h': hum, 'r':rain}}
+		print(weather_add)
+		weather.write_data(weather_add, filename)
+		weather_dict = weather.read_data(filename)
+	elif choice == '3':
+		date = input("Enter date (YYYYMMDD): ")
+		print(weather.report_daily(weather_dict, date))
+	elif choice == '4':
+		print(weather.report_historical(weather_dict))
+	elif choice == '9':
+		program_finish = True
