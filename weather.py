@@ -7,19 +7,24 @@ def read_data(filename):
 			x = json.load(f)
 			return x
 	except FileNotFoundError:
-		print(f"Error: File '{filename}' not found.")
 		return {}
 	except:
-		print(f"An unexpected error occurred")
+		print("An unexpected error occurred")
 		return {}
 
 def write_data(data, filename):
+	try:
 		with open(filename, 'r') as f:
 			existing_data = json.load(f)		
 		existing_data.update(data)
+	except FileNotFoundError:
+		existing_data = {}
+	existing_data.update(data)
+	try:
 		with open(filename, 'w') as f:
 			json.dump(existing_data,f)
-			print("wrote data")
+	except:
+		print("Unexpected error")
 		
 def max_temperature(data, date):
 	date = date[:8]
